@@ -272,9 +272,8 @@ export const productDataList = [
 ];
 
 export const bannerData = [
-  { _id: 1, url: 'https://rukminim1.flixcart.com/flap/3376/560/image/8464e4d9a75b909a.jpg?q=50' },
-  { _id: 2, url: 'https://rukminim1.flixcart.com/flap/3376/560/image/a5320d3f852657e8.jpg?q=50' },
-  { _id: 3, url: 'https://rukminim1.flixcart.com/flap/3376/560/image/5df65ad101e18dbf.jpg?q=50' },
-  { _id: 4, url: 'https://rukminim1.flixcart.com/flap/3376/560/image/8a89ee09acc1a9e5.jpg?q=50' },
-  { _id: 5, url: 'https://rukminim1.flixcart.com/flap/3376/560/image/ed12b7707a04473c.jpg?q=50' },
+ 
+  { _id: 5, url: 'https://img.freepik.com/free-vector/horizontal-banner-template-black-friday-sales_23-2150867247.jpg?t=st=1740725559~exp=1740729159~hmac=15b7ed4b3104c89b3e5beebf5d6e7f54955f98cb59986e55791731f569d72af5&w=2000' },
+
+  { _id: 2, url: 'https://rukminim1.flixcart.com/flap/1688/280/image/b3fe381767050079.jpg?q=50' }
 ]

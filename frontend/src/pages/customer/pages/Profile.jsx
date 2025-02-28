@@ -1,68 +1,162 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { Paper, Typography, Avatar, Container } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Paper, Typography, Avatar, Container, Box, Divider } from '@mui/material';
 import ShippingPage from '../components/ShippingPage';
+import EmailIcon from '@mui/icons-material/Email';
+import PersonIcon from '@mui/icons-material/Person';
+import WorkIcon from '@mui/icons-material/Work';
+
+// Theme colors
+const theme = {
+  colors: {
+    primary: '#6c5ce7',
+    secondary: '#a29bfe',
+    background: {
+      main: '#f8f9fa',
+      light: '#ffffff',
+      gradient: 'linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%)'
+    },
+    text: {
+      primary: '#2d3436',
+      secondary: '#636e72'
+    }
+  }
+};
 
 const Profile = () => {
   const { currentUser } = useSelector(state => state.user);
 
   return (
-    <React.Fragment>
+    <PageWrapper>
       <ProfileContainer>
-        <ProfileHeader elevation={3}>
-          <ProfileAvatar>
-            <h1>
-              {currentUser ? currentUser.name[0].toUpperCase() : ''}
-            </h1>
-          </ProfileAvatar>
-          <ProfileName variant="h4">
-            {currentUser ? currentUser.name : ''}
-          </ProfileName>
-          <ProfileText variant="h6">
-            Email : {currentUser ? currentUser.email : ''}
-          </ProfileText>
-          <ProfileText variant="h6">
-            Role : {currentUser ? currentUser.role : ''}
-          </ProfileText>
+        <ProfileHeader>
+          <CoverImage />
+          <AvatarWrapper>
+            <StyledAvatar>
+              {currentUser?.name[0].toUpperCase()}
+            </StyledAvatar>
+          </AvatarWrapper>
+          <ProfileInfo>
+            <ProfileName variant="h4">
+              {currentUser?.name}
+            </ProfileName>
+            <InfoGrid>
+              <InfoItem>
+                <EmailIcon sx={{ color: theme.colors.primary }} />
+                <InfoText>{currentUser?.email}</InfoText>
+              </InfoItem>
+              <InfoItem>
+                <WorkIcon sx={{ color: theme.colors.primary }} />
+                <InfoText>{currentUser?.role}</InfoText>
+              </InfoItem>
+            </InfoGrid>
+          </ProfileInfo>
         </ProfileHeader>
-      </ProfileContainer>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <ProfileHeader variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+
+        <StyledDivider />
+
+        <ShippingContainer>
+          <SectionTitle variant="h5">
+            Shipping Information
+          </SectionTitle>
           <ShippingPage profile="Profile" />
-        </ProfileHeader>
-      </Container>
-    </React.Fragment>
+        </ShippingContainer>
+      </ProfileContainer>
+    </PageWrapper>
   );
 };
 
+// Styled Components
+const PageWrapper = styled('div')({
+  background: theme.colors.background.main,
+  minHeight: '100vh',
+  padding: '24px'
+});
+
+const ProfileContainer = styled(Container)({
+  maxWidth: '800px !important'
+});
+
+const ProfileHeader = styled(Paper)({
+  position: 'relative',
+  borderRadius: '16px',
+  overflow: 'hidden',
+  background: theme.colors.background.light,
+  boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+  marginBottom: '24px'
+});
+
+const CoverImage = styled('div')({
+  height: '200px',
+  background: theme.colors.background.gradient,
+  position: 'relative'
+});
+
+const AvatarWrapper = styled('div')({
+  position: 'absolute',
+  bottom: '-40px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  display: 'flex',
+  justifyContent: 'center'
+});
+
+const StyledAvatar = styled(Avatar)({
+  width: '120px',
+  height: '120px',
+  fontSize: '3rem',
+  fontWeight: '600',
+  background: theme.colors.primary,
+  border: '4px solid white',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+});
+
+const ProfileInfo = styled(Box)({
+  padding: '60px 24px 24px',
+  textAlign: 'center'
+});
+
+const ProfileName = styled(Typography)({
+  color: theme.colors.text.primary,
+  fontWeight: '600',
+  marginBottom: '16px'
+});
+
+const InfoGrid = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+  alignItems: 'center'
+});
+
+const InfoItem = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px'
+});
+
+const InfoText = styled(Typography)({
+  color: theme.colors.text.secondary,
+  fontSize: '1rem'
+});
+
+const StyledDivider = styled(Divider)({
+  margin: '24px 0',
+  opacity: 0.1
+});
+
+const ShippingContainer = styled(Paper)({
+  padding: '24px',
+  borderRadius: '16px',
+  background: theme.colors.background.light,
+  boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
+});
+
+const SectionTitle = styled(Typography)({
+  color: theme.colors.text.primary,
+  fontWeight: '600',
+  marginBottom: '24px'
+});
+
 export default Profile;
-
-const ProfileContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-`;
-
-const ProfileHeader = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f0f0f0;
-`;
-
-const ProfileAvatar = styled(Avatar)`
-  padding: 30px;
-  background-color: #3f51b5;
-  margin-bottom: 10px;
-`;
-
-const ProfileName = styled(Typography)`
-  padding: 20px;
-`;
-
-const ProfileText = styled(Typography)`
-  margin-bottom: 10px;
-`;

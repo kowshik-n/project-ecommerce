@@ -7,6 +7,7 @@ import { getProducts } from '../redux/userHandle';
 import ProductsMenu from './customer/components/ProductsMenu';
 import { NewtonsCradle } from '@uiball/loaders';
 import { Link } from 'react-router-dom';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 const Home = () => {
   const adURL =
@@ -33,101 +34,232 @@ const Home = () => {
   }, [error]);
 
   return (
-    <div id="top">
-      <Container
-        sx={{
-          display: 'none',
-          '@media (max-width: 600px)': {
-            display: 'flex',
-          },
-        }}
-      >
+    <HomeWrapper id="top">
+      <MobileMenuContainer>
         <ProductsMenu dropName="Categories" />
         <ProductsMenu dropName="Products" />
-      </Container>
-      <BannerBox>
+      </MobileMenuContainer>
+
+      <BannerSection>
         <Banner />
-      </BannerBox>
+      </BannerSection>
 
       {showNetworkError ? (
-        <StyledContainer>
-          <h1>Sorry, network error.</h1>
-        </StyledContainer>
+        <ErrorContainer>
+          <ErrorMessage>Sorry, network error.</ErrorMessage>
+        </ErrorContainer>
       ) : error ? (
-        <StyledContainer>
-          <h1>Please Wait A Second</h1>
-          <NewtonsCradle size={70} speed={1.4} color="black" />
-        </StyledContainer>
+        <LoadingContainer>
+          <LoadingMessage>Please Wait A Second</LoadingMessage>
+          <NewtonsCradle size={70} speed={1.4} color="#6c5ce7" />
+        </LoadingContainer>
       ) : (
         <>
           {responseProducts ? (
-            <>
-              <StyledContainer>No products found right now</StyledContainer>
-              <StyledContainer>
-                Become a seller to add products
-                <Link to={"/Sellerregister"}>
-                  Join
-                </Link>
-              </StyledContainer>
-            </>
+            <EmptyStateContainer>
+              <EmptyStateContent>
+                <EmptyIcon>
+                  <StorefrontIcon sx={{ fontSize: 64, color: '#6c5ce7' }} />
+                </EmptyIcon>
+                <EmptyTitle>No products found right now</EmptyTitle>
+                <EmptyDescription>
+                  Become a seller to add products
+                  <StyledLink to="/Sellerregister">
+                    Join Now
+                  </StyledLink>
+                </EmptyDescription>
+              </EmptyStateContent>
+            </EmptyStateContainer>
           ) : (
-            <>
-              <Component>
-                <LeftComponent>
+            <ContentSection>
+              {/* <MainContent>
+                <LeftContent>
                   <Slide products={productData} title="Top Selection" />
-                </LeftComponent>
+                </LeftContent>
 
-                <RightComponent>
-                  <img src={adURL} alt="" style={{ width: 217 }} />
-                </RightComponent>
-              </Component>
+                <RightContent>
+                  <AdImage src={adURL} alt="Advertisement" />
+                </RightContent>
+              </MainContent> */}
 
-              <Slide products={productData} title="Deals of the Day" />
-              <Slide products={productData} title="Suggested Items" />
-              <Slide products={productData} title="Discounts for You" />
-              <Slide products={productData} title="Recommended Items" />
-            </>
+              <SlideSection>
+                <Slide products={productData} title="Deals of the Day" />
+              </SlideSection>
+              <SlideSection>
+                <Slide products={productData} title="Suggested Items" />
+              </SlideSection>
+              <SlideSection>
+                <Slide products={productData} title="Discounts for You" />
+              </SlideSection>
+              <SlideSection>
+                <Slide products={productData} title="Recommended Items" />
+              </SlideSection>
+            </ContentSection>
           )}
         </>
       )}
-    </div>
+    </HomeWrapper>
   );
 };
 
-export default Home;
+// Styled Components
+const HomeWrapper = styled('div')`
+  background-color: #f8f9fa;
+  min-height: 100vh;
+`;
 
-const StyledContainer = styled(Container)`
+const MobileMenuContainer = styled(Container)`
+  display: none;
+  padding: 16px;
+  gap: 16px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  @media (max-width: 600px) {
+    display: flex;
+  }
+`;
+
+const BannerSection = styled(Box)`
+  padding: 20px 10px;
+  background: linear-gradient(to bottom, #f8f9fa, white);
+`;
+
+const ContentSection = styled('div')`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+`;
+
+const MainContent = styled(Box)`
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+`;
+
+const LeftContent = styled(Box)`
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const RightContent = styled(Box)`
+  width: 17%;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const AdImage = styled('img')`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+`;
+
+const SlideSection = styled('div')`
+  margin-bottom: 32px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+`;
+
+const ErrorContainer = styled(Container)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  text-align: center;
+`;
+
+const ErrorMessage = styled('h1')`
+  color: #e74c3c;
+  font-size: 1.5rem;
+  font-weight: 600;
+`;
+
+const LoadingContainer = styled(Container)`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
   justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 24px;
+`;
+
+const LoadingMessage = styled('h1')`
+  color: #2d3436;
+  font-size: 1.5rem;
+  font-weight: 600;
+`;
+
+const EmptyStateContainer = styled(Container)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 40px;
+`;
+
+const EmptyStateContent = styled('div')`
+  text-align: center;
+  background: white;
+  padding: 48px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  max-width: 500px;
+`;
+
+const EmptyIcon = styled('div')`
+  margin-bottom: 24px;
+`;
+
+const EmptyTitle = styled('h2')`
+  color: #2d3436;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+`;
+
+const EmptyDescription = styled('p')`
+  color: #636e72;
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
 `;
 
-const BannerBox = styled(Box)`
-  padding: 20px 10px;
-  background: #F2F2F2;
+const StyledLink = styled(Link)`
+  color: white;
+  background-color: #6c5ce7;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #5541e5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108,92,231,0.2);
+  }
 `;
 
-const Component = styled(Box)`
-  display: flex;
-`;
-
-const LeftComponent = styled(Box)(({ theme }) => ({
-  width: '83%',
-  [theme.breakpoints.down('md')]: {
-    width: '100%',
-  },
-}));
-
-const RightComponent = styled(Box)(({ theme }) => ({
-  marginTop: 10,
-  background: '#FFFFFF',
-  width: '17%',
-  marginLeft: 10,
-  padding: 5,
-  textAlign: 'center',
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
-}));
+export default Home;

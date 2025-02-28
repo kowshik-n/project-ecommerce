@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Login, Logout, Shop2, Store } from '@mui/icons-material';
+import { Fade } from '@mui/material';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { Avatar, Badge, Divider, Drawer, ListItemIcon } from '@mui/material';
@@ -24,6 +25,30 @@ import Cart from './customer/components/Cart';
 import Search from './customer/components/Search';
 import ProductsMenu from './customer/components/ProductsMenu';
 import { updateCustomer } from '../redux/userHandle';
+
+// Update the theme colors
+const theme = {
+    colors: {
+        primary: '#6c5ce7',
+        primaryDark: '#5541e5',
+        secondary: '#ff4757',
+        accent: '#ffd32a',
+        white: '#ffffff',
+        text: {
+            primary: '#2d3436',
+            secondary: '#636e72',
+            light: '#b2bec3'
+        },
+        background: {
+            light: '#f8f9fa',
+            white: '#ffffff'
+        },
+        hover: {
+            light: 'rgba(255,255,255,0.1)',
+            dark: 'rgba(0,0,0,0.05)'
+        }
+    }
+};
 
 const Navbar = () => {
     const { currentUser, currentRole } = useSelector(state => state.user);
@@ -90,119 +115,39 @@ const Navbar = () => {
     };
 
     return (
-        <AppBar position="sticky">
-            <Container maxWidth="xl" sx={{ backgroundColor: "#4d1c9c" }}>
-                <Toolbar disableGutters>
-
-                    {/* MOBILE */}
-
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={() => { navigate("/Search") }}
-                            color="inherit"
-                        >
-                            <SearchIcon />
-                        </IconButton>
-                    </Box>
-
-                    <HomeContainer>
-                        <Typography
-                            variant="h5"
-                            noWrap
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'flex', md: 'none' },
-                                flexGrow: 1,
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            <NavLogo
-                                to="top"
-                                activeClass="active"
-                                spy={true}
-                                smooth={true}
-                                offset={-70}
-                                duration={500}
-                                onClick={homeHandler}
-                            >
-                                SHOPCART
-                            </NavLogo>
-                        </Typography>
-                    </HomeContainer>
-
-                    {currentRole === null &&
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                            <>
-                                <IconButton
-                                    size="large"
-                                    aria-label="account of current user"
-                                    aria-controls="menu-appbar"
-                                    aria-haspopup="true"
-                                    onClick={handleOpenNavMenu}
-                                    color="inherit"
-                                >
-                                    <Login />
-                                </IconButton>
-                                <Menu
-                                    id="menu-appbar"
-                                    anchorEl={anchorElNav}
-                                    anchorOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'left',
-                                    }}
-                                    keepMounted
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'left',
-                                    }}
-                                    open={Boolean(anchorElNav)}
-                                    onClose={handleCloseNavMenu}
-                                    onClick={handleCloseUserMenu}
-                                    sx={{
-                                        display: { xs: 'block', md: 'none' },
-                                    }}
-                                >
-                                    <MenuItem onClick={() => {
-                                        navigate("/Customerlogin")
-                                        handleCloseNavMenu()
-                                    }}>
-                                        <Typography textAlign="center">Sign in as customer</Typography>
-                                    </MenuItem>
-                                    <MenuItem onClick={() => {
-                                        navigate("/Sellerlogin")
-                                        handleCloseNavMenu()
-                                    }}>
-                                        <Typography textAlign="center">Sign in as seller</Typography>
-                                    </MenuItem>
-                                </Menu>
-                            </>
-                        </Box>
-                    }
-
-                    {/* DESKTOP */}
-
+        <AppBar position="sticky" elevation={0}>
+            <Container maxWidth="xl" sx={{ 
+                background: `linear-gradient(to right, ${theme.colors.primary}, ${theme.colors.primaryDark})`,
+                padding: '0.5rem 0',
+                minHeight: '64px',
+            }}>
+                <Toolbar disableGutters sx={{ 
+                    justifyContent: 'space-between',
+                    minHeight: { xs: '64px', md: '64px' },
+                    gap: 2
+                }}>
+                    {/* Logo Section */}
                     <HomeContainer>
                         <Typography
                             variant="h6"
                             noWrap
                             sx={{
-                                mr: 2,
-                                display: { xs: 'none', md: 'flex' },
-                                fontFamily: 'monospace',
+                                display: 'flex',
+                                fontFamily: '"Poppins", sans-serif',
                                 fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
+                                fontSize: { xs: '1.3rem', md: '1.5rem' },
+                                color: theme.colors.white,
                                 textDecoration: 'none',
+                                alignItems: 'center',
+                                gap: 1,
+                                letterSpacing: '-0.5px'
                             }}
                         >
+                            <LocalMallIcon sx={{ 
+                                display: { xs: 'none', md: 'flex' }, 
+                                fontSize: '2rem',
+                                filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.2))'
+                            }} />
                             <NavLogo
                                 to="top"
                                 activeClass="active"
@@ -211,166 +156,301 @@ const Navbar = () => {
                                 offset={-70}
                                 duration={500}
                                 onClick={homeHandler}
+                                style={{ 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    alignItems: 'flex-start',
+                                    lineHeight: 1.1
+                                }}
                             >
-                                <LocalMallIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-
-                                SHOPCART
+                                E-Mart
+                                <Typography 
+                                    variant="caption" 
+                                    sx={{ 
+                                        fontSize: '11px', 
+                                        fontStyle: 'italic',
+                                        color: theme.colors.yellow,
+                                        display: { xs: 'none', md: 'block' },
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                                    }}
+                                >
+                                </Typography>
                             </NavLogo>
                         </Typography>
                     </HomeContainer>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, }}>
+                    {/* Search Bar */}
+                    <Box sx={{ 
+                        flex: 1,
+                        maxWidth: '680px',
+                        display: 'flex',
+                        backgroundColor: theme.colors.white,
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                        boxShadow: '0 2px 4px 0 rgba(0,0,0,.23)',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                            boxShadow: '0 3px 6px 0 rgba(0,0,0,.28)'
+                        }
+                    }}>
                         <Search />
-                        <ProductsMenu dropName="Categories" />
-                        <ProductsMenu dropName="Products" />
                     </Box>
 
-                    {currentRole === null &&
-                        <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, }}>
-                            <Button
-                                onClick={handleOpenSigninMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Sign in
-                            </Button>
-                            <Menu
-                                anchorEl={anchorElSign}
-                                id="menu-appbar"
-                                open={openSign}
-                                onClose={handleCloseSigninMenu}
-                                onClick={handleCloseSigninMenu}
-                                PaperProps={{
-                                    elevation: 0,
-                                    sx: styles.styledPaper,
-                                }}
-                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                            >
-                                <MenuItem onClick={() => navigate("/Customerlogin")}>
-                                    <Avatar />
-                                    <Link to="/Customerlogin">
-                                        Sign in as customer
-                                    </Link>
-                                </MenuItem>
-                                <Divider />
-                                <MenuItem onClick={() => navigate("/Sellerlogin")}>
-                                    <ListItemIcon>
-                                        <Store fontSize="small" />
-                                    </ListItemIcon>
-                                    <Link to="/Sellerlogin">
-                                        Sign in as seller
-                                    </Link>
-                                </MenuItem>
-                            </Menu>
-                        </Box>
-                    }
-
-                    {/* BOTH */}
-
-                    {currentRole === "Customer" &&
-                        <Box sx={{ flexGrow: 0, display: 'flex' }}>
-                            <Tooltip title="Cart">
-                                <IconButton onClick={handleOpenCart} sx={{ width: "4rem", color: 'inherit', p: 0 }}>
-                                    <Badge badgeContent={totalQuantity} color="error">
-                                        <ShoppingCartIcon sx={{ fontSize: "2rem" }} />
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title="Account settings">
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    size="small"
-                                    sx={{ ml: 2 }}
-                                    aria-controls={open ? 'account-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
+                    {/* Right Section */}
+                    <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center',
+                        gap: { xs: 2, md: 3.5 }
+                    }}>
+                        {currentRole === null &&
+                            <>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleOpenSigninMenu}
+                                    sx={{
+                                        backgroundColor: theme.colors.white,
+                                        color: theme.colors.primary,
+                                        textTransform: 'none',
+                                        padding: '6px 40px',
+                                        fontWeight: 600,
+                                        borderRadius: '2px',
+                                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            backgroundColor: theme.colors.background.light,
+                                            boxShadow: '0 3px 6px rgba(0,0,0,0.15)'
+                                        }
+                                    }}
                                 >
-                                    <Avatar sx={{ width: 32, height: 32, backgroundColor: "#8970dc" }}>
+                                    Login
+                                </Button>
+                                {/* Sign in Menu */}
+                                <Menu
+                                    anchorEl={anchorElSign}
+                                    id="sign-menu"
+                                    open={openSign}
+                                    onClose={handleCloseSigninMenu}
+                                    onClick={handleCloseSigninMenu}
+                                    PaperProps={{
+                                        elevation: 0,
+                                        sx: styles.styledPaper,
+                                    }}
+                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                >
+                                    <MenuItem onClick={() => navigate("/Customerlogin")}>
+                                        <Avatar />
+                                        Sign in as customer
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem onClick={() => navigate("/Sellerlogin")}>
+                                        <ListItemIcon>
+                                            <Store fontSize="small" />
+                                        </ListItemIcon>
+                                        Sign in as seller
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        }
+
+                        {currentRole === "Customer" && (
+                            <>
+                                <Tooltip 
+                                    title="Cart" 
+                                    arrow 
+                                    TransitionComponent={Fade}
+                                    TransitionProps={{ timeout: 600 }}
+                                >
+                                    <IconButton 
+                                        onClick={handleOpenCart}
+                                        sx={{ 
+                                            color: theme.colors.white,
+                                            padding: '8px',
+                                            transition: 'transform 0.2s ease',
+                                            '&:hover': {
+                                                transform: 'scale(1.1)',
+                                                backgroundColor: theme.colors.hover.light
+                                            }
+                                        }}
+                                    >
+                                        <Badge 
+                                            badgeContent={totalQuantity} 
+                                            color="error"
+                                            sx={{
+                                                '& .MuiBadge-badge': {
+                                                    backgroundColor: theme.colors.secondary,
+                                                    color: theme.colors.white,
+                                                    fontWeight: 600,
+                                                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                                                }
+                                            }}
+                                        >
+                                            <ShoppingCartIcon sx={{ fontSize: '1.8rem' }} />
+                                        </Badge>
+                                    </IconButton>
+                                </Tooltip>
+
+                                <Box 
+                                    sx={{ 
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        cursor: 'pointer',
+                                        padding: '4px 8px',
+                                        borderRadius: '4px',
+                                        transition: 'all 0.2s ease',
+                                        '&:hover': {
+                                            backgroundColor: theme.colors.hover.light
+                                        }
+                                    }}
+                                    onClick={handleOpenUserMenu}
+                                >
+                                    <Avatar 
+                                        sx={{ 
+                                            width: 35, 
+                                            height: 35,
+                                            backgroundColor: theme.colors.primaryDark,
+                                            fontSize: '1rem',
+                                            fontWeight: 600,
+                                            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                                        }}
+                                    >
                                         {String(currentUser.name).charAt(0)}
                                     </Avatar>
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                anchorEl={anchorElUser}
-                                id="menu-appbar"
-                                open={open}
-                                onClose={handleCloseUserMenu}
-                                onClick={handleCloseUserMenu}
-                                PaperProps={{
-                                    elevation: 0,
-                                    sx: styles.styledPaper,
-                                }}
-                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                            >
-                                <MenuItem onClick={() => navigate("/Profile")}>
-                                    <Avatar />
-                                    <Link to="/Profile">
+                                    <Typography 
+                                        sx={{ 
+                                            ml: 1, 
+                                            color: theme.colors.white,
+                                            display: { xs: 'none', md: 'block' },
+                                            fontSize: '15px',
+                                            fontWeight: 500
+                                        }}
+                                    >
+                                        {currentUser.name.split(' ')[0]}
+                                    </Typography>
+                                </Box>
+
+                                {/* User Profile Menu */}
+                                <Menu
+                                    anchorEl={anchorElUser}
+                                    id="account-menu"
+                                    open={open}
+                                    onClose={handleCloseUserMenu}
+                                    onClick={handleCloseUserMenu}
+                                    PaperProps={{
+                                        elevation: 0,
+                                        sx: styles.styledPaper,
+                                    }}
+                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                >
+                                    <MenuItem onClick={() => navigate("/Profile")}>
+                                        <Avatar sx={{ backgroundColor: theme.colors.primaryDark }} />
                                         Profile
-                                    </Link>
-                                </MenuItem>
-                                <MenuItem onClick={() => navigate("/Orders")}>
-                                    <ListItemIcon>
-                                        <Shop2 fontSize="small" />
-                                    </ListItemIcon>
-                                    <Link to="/Orders">
+                                    </MenuItem>
+                                    <MenuItem onClick={() => navigate("/Orders")}>
+                                        <ListItemIcon>
+                                            <Shop2 fontSize="small" />
+                                        </ListItemIcon>
                                         My Orders
-                                    </Link>
-                                </MenuItem>
-                                <Divider />
-                                <MenuItem onClick={() => navigate("/Logout")}>
-                                    <ListItemIcon>
-                                        <Logout fontSize="small" />
-                                    </ListItemIcon>
-                                    <Link to="/Logout">
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem onClick={() => navigate("/Logout")}>
+                                        <ListItemIcon>
+                                            <Logout fontSize="small" />
+                                        </ListItemIcon>
                                         Logout
-                                    </Link>
-                                </MenuItem>
-                            </Menu>
-                        </Box>
-                    }
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        )}
+                    </Box>
 
                 </Toolbar>
             </Container>
 
-            {
-                isCartOpen &&
-                <Drawer
-                    anchor="right"
-                    open={isCartOpen}
-                    onClose={handleCloseCart}
-                    sx={{
-                        width: '400px',
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: '400px',
-                            boxSizing: 'border-box',
-                        },
-                    }}
-                >
-                    <Cart setIsCartOpen={setIsCartOpen} />
-                </Drawer>
-            }
-        </AppBar >
+            {/* Categories Bar */}
+            <Box 
+                sx={{ 
+                    backgroundColor: theme.colors.white,
+                    boxShadow: '0 2px 4px -2px rgba(0,0,0,.12)',
+                    display: { xs: 'none', md: 'block' }
+                }}
+            >
+                <Container maxWidth="xl">
+                    <Box sx={{ 
+                        display: 'flex',
+                        gap: 5,
+                        py: 1.2,
+                        '& > *': {
+                            color: theme.colors.text.primary,
+                            fontSize: '14.5px',
+                            fontWeight: 500,
+                            textTransform: 'none',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                color: theme.colors.primary,
+                                transform: 'translateY(-1px)'
+                            }
+                        }
+                    }}>
+                        <ProductsMenu dropName="Categories" />
+                        <ProductsMenu dropName="Products" />
+                    </Box>
+                </Container>
+            </Box>
+
+            {/* Cart Drawer */}
+            <Drawer
+                anchor="right"
+                open={isCartOpen}
+                onClose={handleCloseCart}
+                sx={{
+                    '& .MuiDrawer-paper': {
+                        width: { xs: '100%', sm: '400px' },
+                        boxSizing: 'border-box',
+                        boxShadow: '-4px 0 20px rgba(0,0,0,0.15)',
+                        background: theme.colors.white,
+                        borderLeft: 'none'
+                    },
+                }}
+            >
+                <Cart setIsCartOpen={setIsCartOpen} />
+            </Drawer>
+        </AppBar>
     );
 }
-export default Navbar;
 
 const HomeContainer = styled.div`
   display: flex;
-  cursor:pointer;
+  cursor: pointer;
+  align-items: center;
+  min-width: fit-content;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
 `;
 
 const styles = {
     styledPaper: {
         overflow: 'visible',
-        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
         mt: 1.5,
-        '& .MuiAvatar-root': {
-            width: 32,
-            height: 32,
-            ml: -0.5,
-            mr: 1,
+        borderRadius: '2px',
+        '& .MuiMenuItem-root': {
+            padding: '12px 24px',
+            fontSize: '14px',
+            '&:hover': {
+                backgroundColor: theme.colors.hover.grey
+            }
+        },
+        '& .MuiDivider-root': {
+            margin: '8px 0',
         },
         '&:before': {
             content: '""',
@@ -380,9 +460,183 @@ const styles = {
             right: 14,
             width: 10,
             height: 10,
-            bgcolor: 'background.paper',
+            bgcolor: theme.colors.white,
             transform: 'translateY(-50%) rotate(45deg)',
             zIndex: 0,
         },
     }
 }
+
+// Update the styled components with new styles
+const NavbarContainer = styled(AppBar)`
+  && {
+    background: ${theme.colors.primary};
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+`;
+
+const ToolbarStyled = styled(Toolbar)`
+  && {
+    padding: 8px 24px;
+    gap: 24px;
+    
+    @media (max-width: 600px) {
+      padding: 8px 16px;
+      gap: 16px;
+    }
+  }
+`;
+
+const LogoContainer = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: ${theme.colors.hover.light};
+  }
+`;
+
+const LogoText = styled(Typography)`
+  && {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: ${theme.colors.white};
+    letter-spacing: -0.5px;
+  }
+`;
+
+const SearchContainer = styled(Box)`
+  flex: 1;
+  max-width: 680px;
+  background: ${theme.colors.white};
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+`;
+
+const ActionButtons = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const LoginButton = styled(Button)`
+  && {
+    background: ${theme.colors.white};
+    color: ${theme.colors.primary};
+    padding: 6px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-transform: none;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: ${theme.colors.background.light};
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  }
+`;
+
+const CartButton = styled(IconButton)`
+  && {
+    color: ${theme.colors.white};
+    padding: 8px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: ${theme.colors.hover.light};
+      transform: scale(1.1);
+    }
+  }
+`;
+
+const UserAvatar = styled(Avatar)`
+  && {
+    width: 35px;
+    height: 35px;
+    background: ${theme.colors.primaryDark};
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+  }
+`;
+
+const CategoryBar = styled(Box)`
+  && {
+    background: ${theme.colors.white};
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+`;
+
+const CategoryContainer = styled(Box)`
+  display: flex;
+  gap: 32px;
+  padding: 12px 24px;
+  
+  & > * {
+    color: ${theme.colors.text.primary};
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: ${theme.colors.primary};
+      transform: translateY(-1px);
+    }
+  }
+`;
+
+// Update the StyledMenu styles
+const StyledMenu = {
+  paper: {
+    overflow: 'visible',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
+    mt: 1.5,
+    borderRadius: '8px',
+    '& .MuiMenuItem-root': {
+      padding: '12px 24px',
+      fontSize: '14px',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        background: theme.colors.background.light,
+        color: theme.colors.primary
+      }
+    },
+    '&:before': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      right: 14,
+      width: 10,
+      height: 10,
+      bgcolor: theme.colors.white,
+      transform: 'translateY(-50%) rotate(45deg)',
+      zIndex: 0,
+    },
+  }
+};
+
+export default Navbar;

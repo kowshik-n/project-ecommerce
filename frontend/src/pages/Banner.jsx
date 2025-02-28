@@ -11,7 +11,7 @@ const Banner = () => {
             responsive={responsive}
             infinite={true}
             autoPlay={true}
-            autoPlaySpeed={4000}
+            // autoPlaySpeed={4000}
             keyBoardControl={true}
             showDots={true}
             slidesToSlide={1}
@@ -21,7 +21,7 @@ const Banner = () => {
             itemClass="carousel-item-padding-40-px"
         >
             {bannerData.map((image) => (
-                <Image src={image.url} alt={image.alt} key={image._id} />
+                <Image src={image.url} alt={image.alt} key={image._id}  />
             ))}
         </Carousel>
     );
@@ -47,7 +47,8 @@ const responsive = {
 
 const Image = styled('img')(({ theme }) => ({
     width: '100%',
-    height: 230,
+    height: 200,
+    objectFit: 'contain',
     [theme.breakpoints.down('sm')]: {
         objectFit: 'cover',
         height: 180,
